@@ -1,4 +1,6 @@
 from pytest import fixture
+from config import Config
+
 
 # import os
 # from selenium import webdriver
@@ -23,3 +25,8 @@ def pytest_addoption(parser):
 @fixture(scope='session')
 def env(request):
     return request.config.getoption('--env')
+
+@fixture(scope='session')
+def app_config(env):
+    cfg = Config(env)
+    return cfg
