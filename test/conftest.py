@@ -1,17 +1,32 @@
+import json
 from pytest import fixture
 from config import Config
+import os
+from selenium import webdriver
 
 
-# import os
-# from selenium import webdriver
+chromedriver = "../driver/chromedriver.exe"
+os.environ["webdriver.chrome.driver"] = chromedriver
 
-# @fixture(scope='session')
-# def chrome_browser():
-#     chromedriver = "./driver/chromedriver"
-#     os.environ["webdriver.chrome.driver"] = chromedriver
-#     driver = webdriver.Chrome(chromedriver)
-#     # return driver
-#     yield driver
+data_path = 'C:/Users/kevin/Documents/udemy/pytest/test/test_data.json'
+
+def load_test_data(path):
+    with open(path) as f:
+        data = json.load(f)
+        return data
+
+
+# @fixture(params=[
+#     webdriver.Chrome(chromedriver),
+#     webdriver.Firefox(chromedriver),
+#     webdriver.Edge(chromedriver)
+# ])
+# def chrome_browser(request):
+#     # driver = webdriver.Chrome(chromedriver)
+#     driver = request.param
+#     drvr = driver()
+#     yield drvr
+#     drvr.quit()
 
 #     print('I am tearing down the browser...')
 
@@ -30,3 +45,9 @@ def env(request):
 def app_config(env):
     cfg = Config(env)
     return cfg
+
+
+@fixture(params=[load_test_data(data_path)])
+def tv_brand(request):
+    data = request.param
+    return data
